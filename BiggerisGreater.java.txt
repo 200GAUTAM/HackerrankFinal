@@ -1,0 +1,58 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the biggerIsGreater function below.
+    static String biggerIsGreater(String w) {
+        char[] ch = w.toCharArray();
+        int start  = -1;
+        int i = 0;
+        while(i<ch.length-1){
+            if(ch[i]<ch[i+1]){
+                start = i;
+            }
+            i = i+1;
+        }
+        if(start == -1) return "no answer";
+        int j = -1;
+        for(int k = start+1; k<w.length(); k++){
+            if(ch[k]> ch[start]){
+                j = k;
+            }
+        }
+        char temp = ch[j];
+        ch[j] = ch[start];
+        ch[start] = temp;
+        Arrays.sort(ch,start+1,w.length());
+        return String.valueOf(ch);
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int T = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int TItr = 0; TItr < T; TItr++) {
+            String w = scanner.nextLine();
+
+            String result = biggerIsGreater(w);
+
+            bufferedWriter.write(result);
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
