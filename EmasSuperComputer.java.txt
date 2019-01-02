@@ -1,0 +1,93 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the twoPluses function below.
+    static int twoPluses(String[] grid) {
+        int l = grid.length;
+        int b = grid[0].length();
+        char[][] gr = new char[20][20];
+        for(int i = 0; i<l; i++){
+            char[] temp = grid[i].toCharArray();
+            for(int j = 0; j<b; j++){
+                gr[i+1][j+1] = temp[j];
+            }
+        }
+
+        int ans = 0;
+
+        for(int i =1; i<l+1; i++){
+            for(int j = 1; j<b+1; j++){
+                int r = 0;
+                while(gr[i+r][j] == 'G' && gr[i-r][j] == 'G' && gr[i][j+r] == 'G' && gr[i][j-r] == 'G') {
+                    gr[i+r][j] = 'g';
+                    gr[i-r][j] = 'g';
+                    gr[i][j+r] = 'g';
+                    gr[i][j-r] = 'g';
+                    for(int X = 1; X<l+1; X++){
+                        for(int Y = 1; Y<b+1; Y++){
+                            int R = 0;
+                            while(gr[X+R][Y] == 'G' && gr[X-R][Y] == 'G' && gr[X][Y+R] == 'G' && gr[X][Y-R] == 'G') {
+                                ans = Math.max(ans, (1 + 4 * r) * (1 + 4 * R));
+                                R++;
+
+                            }
+                        }
+                    }
+                    r++;
+                }
+
+                r = 0;
+                while(gr[i+r][j] == 'g' && gr[i-r][j] == 'g' && gr[i][j+r] == 'g' && gr[i][j-r] == 'g') {
+
+gr[i+r][j] ='G';
+                    gr[i-r][j] = 'G';
+                    gr[i][j+r] = 'G';
+                    gr[i][j-r] = 'G';
+                    r++;
+
+
+                }
+
+            }
+        }
+
+        return ans;
+
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nm = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nm[0]);
+
+        int m = Integer.parseInt(nm[1]);
+
+        String[] grid = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            String gridItem = scanner.nextLine();
+            grid[i] = gridItem;
+        }
+
+        int result = twoPluses(grid);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
