@@ -1,0 +1,93 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the matrixRotation function below.
+    static void matrixRotation(List<List<Integer>> matrix, int r) {
+         int R = matrix.size();
+         int c = matrix.get(0).size();
+         int layers = Math.min(R,c)/2;
+         for(int layer = 0; layer<layers; layer++){
+             for(int x = 0; x<r%(2*(R + c - 2 - 4*layer)); x++){
+                    int i = layer;
+                    int j = layer;
+                    int temp = matrix.get(layer).get(layer);
+                    while(i < R - 1 - layer){
+                        int temp2 = matrix.get(i+1).get(j);
+                        matrix.get(i+1).set(j,temp);
+                        temp = temp2;
+                        i = i+1;
+                    }
+
+                    while(j < c - 1 - layer){
+                        int temp2 = matrix.get(i).get(j+1);
+                        matrix.get(i).set(j+1,temp);
+                        temp = temp2;
+                        j++;
+                    }
+
+                    while(i> layer){
+                        int temp2 = matrix.get(i-1).get(j);
+                        matrix.get(i-1).set(j,temp);
+                        temp = temp2;
+                        i--;
+                    }
+
+                    while(j>layer){
+                        int temp2 = matrix.get(i).get(j-1);
+                        matrix.get(i).set(j-1,temp);
+                        temp = temp2;
+                        j--;
+                    }
+
+             }
+         }
+
+         for(int i = 0; i< matrix.size(); i++){
+             for(int j = 0; j<matrix.get(0).size(); j++){
+                 System.out.print(matrix.get(i).get(j) + " ");
+
+             }
+             System.out.println("");
+         }
+
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] mnr = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int m = Integer.parseInt(mnr[0]);
+
+        int n = Integer.parseInt(mnr[1]);
+
+        int r = Integer.parseInt(mnr[2]);
+
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            String[] matrixRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> matrixRowItems = new ArrayList<>();
+
+            for (int j = 0; j < n; j++) {
+                int matrixItem = Integer.parseInt(matrixRowTempItems[j]);
+                matrixRowItems.add(matrixItem);
+            }
+
+            matrix.add(matrixRowItems);
+        }
+
+        matrixRotation(matrix, r);
+
+        bufferedReader.close();
+    }
+}
